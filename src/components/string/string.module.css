@@ -1,0 +1,15 @@
+.form {
+    width: 567px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+
+.circles {
+    padding-top: 120px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 16px;
+}
