@@ -4,9 +4,9 @@ import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
-import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { DELAY_IN_MS } from "../../constants/delays";
 import { ElementStates } from "../../types/element-states";
-import { delay } from "./utils";
+import { delay } from "../../utils";
 import { getReverse } from "./utils";
 import styles from './string.module.css';
 
@@ -31,7 +31,7 @@ export const StringComponent: React.FC = () => {
 
     for (let i = 0; i < arr.length; i++) {
       setData((prev) => ({ ...prev, ...arr[i] }));
-      await delay(SHORT_DELAY_IN_MS);
+      await delay(DELAY_IN_MS);
     }
   };
 

@@ -1,7 +1,5 @@
 type Reverse = { arr: string[]; swapping: number[]; done: number[] };
 
-export const delay = (time: number) => new Promise<void>((resolve) => setTimeout(resolve, time));
-
 const swap = (arr: string[], index1: number, index2: number) => {
     let temp: string = arr[index1];
     arr[index1] = arr[index2];
