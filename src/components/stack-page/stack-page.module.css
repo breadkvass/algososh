@@ -13,3 +13,12 @@
     gap: 12px;
     width: 100%;
 }
+
+.circles {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 16px;
+    margin: 0 auto;
+    padding-top: 48px;
+}
