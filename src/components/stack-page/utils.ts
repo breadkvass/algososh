@@ -1,8 +1,19 @@
 import { useState } from "react";
 import { delay } from "../../utils";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
-import { Stack } from "./stack-page";
 
+export class Stack<T> {
+  private container: T[] = [];
+
+  pop = (): void => { this.container && this.container.pop() };
+  push = (item: T): void => { this.container.push(item); };
+  peak = (): T | null => {
+    return this.container ? this.container[this.container.length-1] : null;
+  };
+  getSize = () => this.container.length;
+  list = (): T[] => this.container.slice();
+  reset = () => (this.container = []);
+}
 
 export default function useStack<T>(stack: Stack<T>) {
     const [container, setContainer] = useState({ array: stack.list(), changing: -1 });
