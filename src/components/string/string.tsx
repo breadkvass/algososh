@@ -22,13 +22,6 @@ export const StringComponent: React.FC = () => {
   const reverse = async (str: string) => {
     const arr = getReverse(str);
 
-    setData({
-      loading: false,
-      arr: [],
-      swapping: [],
-      done: [],
-    });
-
     for (let i = 0; i < arr.length; i++) {
       setData((prev) => ({ ...prev, ...arr[i] }));
       await delay(DELAY_IN_MS);
