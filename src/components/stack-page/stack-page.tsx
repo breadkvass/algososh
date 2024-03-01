@@ -5,37 +5,47 @@ import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import { ElementStates } from "../../types/element-states";
 import useStack from "./utils";
+import { Stack } from "./utils";
 import styles from './stack-page.module.css'
 
-export class Stack<T> {
-  private container: T[] = [];
+type ButtonState = 'active' | 'loading' | 'disabled';
 
-  pop = (): void => { this.container && this.container.pop() };
-  push = (item: T): void => { this.container.push(item); };
-  peak = (): T | null => {
-    return this.container ? this.container[this.container.length-1] : null;
-  };
-  getSize = () => this.container.length;
-  list = (): T[] => this.container.slice();
-  reset = () => (this.container = []);
+type Buttons = {
+  add: ButtonState;
+  delete: ButtonState;
+  reset: ButtonState;
 }
+
+const initialState: Buttons = {
+  add: 'active',
+  delete: 'active',
+  reset: 'active',
+};
 
 export const stack = new Stack<string>();
 
 export const StackPage: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [{ array, changing }, { pop, push, reset }] = useStack<string>(stack);
-  const [loading, setLoading] = useState({ addButton: false, deleteButton: false });
+  const [buttons, setButtons] = useState<Buttons>(initialState);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading((prev) => ({ ...prev, addButton: true }));
-    push(inputValue).then(() => setLoading((prev) => ({ ...prev, addButton: false })));
+    setButtons({
+      add: 'loading',
+      delete: 'disabled',
+      reset: 'disabled',
+   });
+    push(inputValue).then(() => setButtons(initialState));
   }
 
   const onClickHandlerPop = () => {
-    setLoading((prev) => ({ ...prev, deleteButton: true }));
-    pop().then(() => setLoading((prev) => ({ ...prev, deleteButton: false })));
+    setButtons({
+      add: 'disabled',
+      delete: 'loading',
+      reset: 'disabled',
+   });
+    pop().then(() => setButtons(initialState));
   }
 
   const setState = (index: number) => {
@@ -47,10 +57,20 @@ export const StackPage: React.FC = () => {
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.edit}>
           <Input isLimitText maxLength={4} value={inputValue} onChange={(e) => setInputValue(e.currentTarget.value)} />
-          <Button type="submit" text="Добавить" disabled={!inputValue} isLoader={loading.addButton} />
-          <Button onClick={onClickHandlerPop} text="Удалить" disabled={!array.length} isLoader={loading.deleteButton} />
+          <Button
+            type="submit"
+            text="Добавить"
+            disabled={buttons.add === 'disabled' ? true : false}
+            isLoader={buttons.add === 'loading' ? true : false}
+          />
+          <Button
+            onClick={onClickHandlerPop}
+            text="Удалить"
+            disabled={stack.getSize() === 0 || buttons.delete === 'disabled' ? true : false}
+            isLoader={buttons.delete === 'loading' ? true : false}
+          />
         </div>
-        <Button disabled={!array.length} onClick={reset} text="Очистить" />
+        <Button disabled={stack.getSize() === 0 || buttons.reset === 'disabled' ? true : false} onClick={reset} text="Очистить" />
       </form>
       <div className={styles.circles}>
         {array.map((item, i) => (
