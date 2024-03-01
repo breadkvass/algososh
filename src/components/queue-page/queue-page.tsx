@@ -1,85 +1,86 @@
-import React, { useState } from "react";
+import React, { useState, FormEvent } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
+import useQueue from "./utils";
+import { ElementStates } from "../../types/element-states";
+import { HEAD, TAIL } from "../../constants/element-captions";
 import styles from './queue-page.module.css';
+import { Queue } from "./utils";
 
-export class Queue<T> {
-  private container: (T | null)[] = [];
-  private head = 0;
-  private tail = 0;
-  private readonly size: number = 0;
-  private length: number = 0;
+type ButtonState = 'active' | 'loading' | 'disabled';
 
-  constructor(size: number) {
-    this.size = size;
-    this.container = Array(size).fill(null);
-  }
-
-  enqueue = (item: T) => {
-    if (this.length >= this.size) {
-      throw new Error("Maximum length exceeded");
-    } else {
-      this.container[this.tail % this.size] = item;
-      this.tail++;
-      this.length++;
-    }
-  };
-
-  dequeue = () => {
-    if (this.isEmpty()) {
-      throw new Error("No elements in the queue");
-    } else {
-      delete this.container[this.head % this.size];
-      this.head++;
-      this.length--;
-    }
-  };
-
-  peak = (): T | null => {
-    if (this.isEmpty()) {
-      throw new Error("No elements in the queue");
-    }
-    if (this.container[this.head]) {
-      return this.container[this.head];
-    } else
-    return null;
-  };
-
-  isEmpty = () => this.length === 0;
-
-  list = (): (T | null)[] => this.container.slice();
-
-  getHead = () => this.head;
-  getTail = () => this.tail;
-
-  reset = () => {
-    this.head = 0;
-    this.tail = 0;
-    this.length = 0;
-    this.container = Array(this.size).fill(null);
-  };
+type Buttons = {
+  add: ButtonState;
+  delete: ButtonState;
+  reset: ButtonState;
 }
 
-export const queue = new Queue<string>(7);
+const initialState: Buttons = {
+  add: 'active',
+  delete: 'active',
+  reset: 'active',
+};
+
+const queue = new Queue<string>(7);
 
 export const QueuePage: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
-  let array: string[] = ['', '', '', '', '', '', ''];
+  const [{ array, changing, head, tail }, { enqueue, dequeue, reset }] = useQueue<string>(queue);
+  const [buttons, setButtons] = useState<Buttons>(initialState);
+
+  const handlerSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setButtons({
+      add: 'loading',
+      delete: 'disabled',
+      reset: 'disabled',
+   });
+    enqueue(inputValue).then(() => setButtons(initialState));
+    setInputValue('');
+  }
+
+  const onClickHandlerDequeue = () => {
+    setButtons({
+      add: 'disabled',
+      delete: 'loading',
+      reset: 'disabled',
+   });
+    dequeue().then(() => setButtons(initialState));
+  }
+
+  const setState = (i: number) => {
+    return changing === i ? ElementStates.Changing : ElementStates.Default
+  }
+
   return (
     <SolutionLayout title="Стек">
-      <form className={styles.form} onSubmit={() => {}}>
+      <form className={styles.form} onSubmit={handlerSubmit}>
         <div className={styles.edit}>
-          <Input isLimitText maxLength={4} value={''} onChange={(e) => setInputValue(e.currentTarget.value)} />
-          <Button type="submit" text="Добавить" disabled={!inputValue} isLoader={false} />
-          <Button onClick={() => {}} text="Удалить" disabled={false} isLoader={false} />
+          <Input isLimitText={true} maxLength={4} value={inputValue} onChange={(e) => setInputValue(e.currentTarget.value)} />
+          <Button
+            type="submit"
+            text="Добавить"
+            disabled={queue.isFull() || buttons.add === 'disabled' ? true : false}
+            isLoader={buttons.add === 'loading' ? true : false}
+          />
+          <Button onClick={onClickHandlerDequeue}
+            text="Удалить"
+            disabled={queue.isEmpty() || buttons.delete === 'disabled' ? true : false}
+            isLoader={buttons.delete === 'loading' ? true : false}
+          />
         </div>
-        <Button disabled={false} onClick={() => {}} text="Очистить" />
+        <Button disabled={queue.isEmpty() || buttons.reset === 'disabled' ? true : false} onClick={reset} text="Очистить" />
       </form>
       <div className={styles.circles}>
-        {array.map((item, i) => (
-          <Circle letter={item} key={i} index={i} />
+        {array.map((item, i, arr) => (
+          <Circle letter={item || ''}
+            key={i}
+            index={i}
+            head={i === head ? HEAD : ''}
+            tail={i + 1 === tail || (item && i === arr.length - 1 && tail === 0) ? TAIL : ''}
+            state={setState(i)} />
         ))}
       </div>
     </SolutionLayout>
