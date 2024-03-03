@@ -65,7 +65,8 @@ export const QueuePage: React.FC = () => {
             disabled={queue.isFull() || buttons.add === 'disabled' ? true : false}
             isLoader={buttons.add === 'loading' ? true : false}
           />
-          <Button onClick={onClickHandlerDequeue}
+          <Button
+            onClick={onClickHandlerDequeue}
             text="Удалить"
             disabled={queue.isEmpty() || buttons.delete === 'disabled' ? true : false}
             isLoader={buttons.delete === 'loading' ? true : false}
