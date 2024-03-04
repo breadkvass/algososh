@@ -1,0 +1,33 @@
+.filtres {
+    display: flex;
+    flex-direction: row;
+    width: 980px;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.radio {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    padding-right: 52px;
+}
+
+.sorting {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    padding-right: 80px;
+}
+
+.columns {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    align-items: end;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 48px;
+}
