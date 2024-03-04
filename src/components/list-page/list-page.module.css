@@ -4,6 +4,23 @@
     gap: 12px;
 }
 
+.circles {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin: 0 auto;
+    padding-top: 90px;
+}
+
+.circle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
 .row {
     display: flex;
     flex-direction: row;
