@@ -44,6 +44,10 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.3.3"
+    "@types/react-router-dom": "^5.3.3",
+    "@types/react-test-renderer": "^18.0.7",
+    "i": "^0.3.7",
+    "npm": "^10.5.0",
+    "react-test-renderer": "17.0"
   }
 }
