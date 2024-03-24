@@ -35,8 +35,13 @@ export const SortingPage: React.FC = () => {
   const [sortingType, setSortingType] = useState<Sorting>('select');
   const [buttons, setButtons] = useState<Buttons>(initialState);
 
+
+  const set = useCallback((arr: ArrayElement[]) => {
+    setArray(arr);
+  }, [array, setArray]);
+
   const runSort = useCallback((sorting: Sorting, direction: Direction) => {
-    return sorting === 'bubble' ?  bubbleSort(array, direction, setArray) : selectionSort(array, direction, setArray)
+    return sorting === 'bubble' ?  bubbleSort(array, direction, set) : selectionSort(array, direction, set)
   }, [array, setArray]);
 
   const onAscendingButton = useCallback(() => {
