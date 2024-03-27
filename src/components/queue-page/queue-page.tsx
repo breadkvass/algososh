@@ -55,7 +55,7 @@ export const QueuePage: React.FC = () => {
   }
 
   return (
-    <SolutionLayout title="Стек">
+    <SolutionLayout title="Очередь">
       <form className={styles.form} onSubmit={handlerSubmit}>
         <div className={styles.edit}>
           <Input isLimitText={true} maxLength={4} value={inputValue} onChange={(e) => setInputValue(e.currentTarget.value)} />
