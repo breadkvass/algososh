@@ -1,15 +1,15 @@
-describe('Проверка Фибоначчи', function() {
+describe('Проверка Фибоначчи', () => {
     beforeEach(function() {
         cy.visit('http://localhost:3000/');
         cy.get('[href="/fibonacci"]').click();
     });
 
-    it('если в инпуте пусто, то кнопка добавления недоступна', function() {
+    it('если в инпуте пусто, то кнопка добавления недоступна', () => {
         cy.get('[type="text"]').clear();
         cy.get('button').get('[type="submit"]').should('be.disabled');
     });
 
-    it('числа генерируются корректно', function() {
+    it('числа генерируются корректно', () => {
         const test = '5';
         const expexted = [0, 1, 1, 2, 3]
         const circles = () => {

@@ -1,17 +1,17 @@
 import 'cypress-wait-until';
 
-describe('Проверка строки', function() {
+describe('Проверка строки', () => {
     const test = 'string';
     const circles = () => {
         return cy.get('div[class^="string_circles"]').children()
     }
 
-    beforeEach(function() {
+    beforeEach(() => {
         cy.visit('http://localhost:3000/');
         cy.get('[href="/recursion"]').click();
     });
 
-    it('если в инпуте пусто, то кнопка добавления недоступна', function() {
+    it('если в инпуте пусто, то кнопка добавления недоступна', () => {
         cy.get('[type="text"]').clear();
         cy.get('button').get('[type="submit"]').should('be.disabled');
     });

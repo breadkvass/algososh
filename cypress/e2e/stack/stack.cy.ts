@@ -1,17 +1,17 @@
 import 'cypress-wait-until';
 
-describe('Проверка Стека', function() {
+describe('Проверка Стека', () => {
     beforeEach(function() {
         cy.visit('http://localhost:3000/');
         cy.get('[href="/stack"]').click();
     });
 
-    it('если в инпуте пусто, то кнопка добавления недоступна', function() {
+    it('если в инпуте пусто, то кнопка добавления недоступна', () => {
         cy.get('[type="text"]').clear();
         cy.get('button').get('[type="submit"]').should('be.disabled');
     });
 
-    it('элемент в стек добавляется корректно, анимация работает', function() {
+    it('элемент в стек добавляется корректно, анимация работает', () => {
         const test = ['5', '4', '3', '2'];
         const circles = () => {
             return cy.get('div[class^="stack-page_circles"]').children()
@@ -36,7 +36,7 @@ describe('Проверка Стека', function() {
         }
     });
 
-    it('элемент из стека удалятся корректно', function() {
+    it('элемент из стека удалятся корректно', () => {
         // добавим 4 элемента в стек
         const test = ['5', '4', '3', '2'];
         const circles = () => {
@@ -60,7 +60,7 @@ describe('Проверка Стека', function() {
         }
     });
 
-    it('по нажатию на кнопку «Очистить» длина стека должна быть равна 0', function() {
+    it('по нажатию на кнопку «Очистить» длина стека должна быть равна 0', () => {
         // добавим 4 элемента в стек
         const test = ['5', '4', '3', '2'];
         const circles = () => {
