@@ -16,7 +16,7 @@ describe('Проверка строки', function() {
         cy.get('button').get('[type="submit"]').should('be.disabled');
     });
 
-    it('строка разворачивается корректно', () => {
+    it('строка разворачивается корректно, анимация работает', () => {
         cy.get('[type="text"]').type(test)
         cy.get('[type="submit"]').click();
 
@@ -32,19 +32,8 @@ describe('Проверка строки', function() {
                     .find('div[class^="circle_circle"]')
                     .should('have.attr', 'class')
                     .should('include', 'modified'));
-        }
-    })
-
-    it('анимация разворота строки работает корректно', () => {
-        cy.get('[type="text"]').type(test)
-        cy.get('[type="submit"]').click();
-
-        circles().should('have.length', test.length);
-
-        for (let i = 0; i < test.length / 2; i++) {
             circles()
-                .eq(i)
                 .should('contain.text', test[test.length - i - 1])
-        }  
+        }
     })
 })
